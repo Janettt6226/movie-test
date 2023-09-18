@@ -13,12 +13,14 @@ movies_serialized = URI.open(url).read
 movies = JSON.parse(movies_serialized)
 
 Movie.destroy_all
+Genre.destroy_all
+Actor.destroy_all
 
 puts "==========================================="
 puts "Creating movies..."
 puts "==========================================="
 movies.take(10).each do |movie|
-  new_movie = Movie.new(
+  new_movie = Movie.create(
     title: movie["title"],
     year: movie["year"],
     image: movie["image"],
@@ -26,5 +28,28 @@ movies.take(10).each do |movie|
     rating: movie["rating"]
   )
   puts new_movie.title
-  new_movie.save!
+end
+
+puts "==========================================="
+puts "Creating actors..."
+puts "==========================================="
+movies.take(10).each do |movie|
+  new_actor = Actor.new
+  movie["actors"].each do |f|
+    new_actor = Actor.create(name: f)
+  end
+  movie["actor_facets"].each do |f|
+    new_actor.image = f
+  end
+  # puts new_actor.name
+end
+
+puts "==========================================="
+puts "Creating genres..."
+puts "==========================================="
+movies.take(10).each do |movie|
+  movie["genre"].each do |f|
+    new_genre = Genre.create(name: f)
+    puts new_genre.name
+  end
 end

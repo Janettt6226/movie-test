@@ -10,9 +10,40 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_18_123058) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_18_132436) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "actors", force: :cascade do |t|
+    t.string "name"
+    t.string "image"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "actors_to_movies", force: :cascade do |t|
+    t.bigint "actor_id", null: false
+    t.bigint "movie_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["actor_id"], name: "index_actors_to_movies_on_actor_id"
+    t.index ["movie_id"], name: "index_actors_to_movies_on_movie_id"
+  end
+
+  create_table "genre_to_movies", force: :cascade do |t|
+    t.bigint "movie_id", null: false
+    t.bigint "genre_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["genre_id"], name: "index_genre_to_movies_on_genre_id"
+    t.index ["movie_id"], name: "index_genre_to_movies_on_movie_id"
+  end
+
+  create_table "genres", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "movies", force: :cascade do |t|
     t.string "title"
@@ -24,4 +55,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_18_123058) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "actors_to_movies", "actors"
+  add_foreign_key "actors_to_movies", "movies"
+  add_foreign_key "genre_to_movies", "genres"
+  add_foreign_key "genre_to_movies", "movies"
 end

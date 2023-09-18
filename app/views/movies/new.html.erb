@@ -1,6 +1,5 @@
 <%= simple_form_for [@movie] do |f| %>
   <%= f.input :title, as: :string, input_html: { data: { controller: "datepicker" } } %>
   <%= f.input :year, as: :string, input_html: { data: { controller: "datepicker" } } %>
-  <%= f.submit "Book this gig", class: "btn btn-warning" %>
+  <%= f.submit "Add this movie", class: "btn btn-warning" %>
 <% end %>
-
