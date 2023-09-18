@@ -1,0 +1,16 @@
+<h1>All movies</h1>
+
+<%= link_to "Add a movie", new_movie_path%>
+
+<% Movie.all.each do |movie| %>
+  <h2><%= movie.title %></h2>
+  <% if movie.image.nil? == "false" %>
+    <img src=<%= movie.image %> alt="movie cover">
+  <% else %>
+    <img src="https://i.gifer.com/ZJuw.gif" alt="cat cover">
+  <% end %>
+  <h3>Out in: <%= movie.year %></h3>
+  <p>Score: <%= movie.score %></p>
+  <p>Rating: <%= movie.rating %></p>
+  <%# <p>Genre: <%= movie.genre %>
+<% end %>
