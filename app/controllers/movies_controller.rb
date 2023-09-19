@@ -1,8 +1,8 @@
 class MoviesController < ApplicationController
-  before_action :set_movie, only: %i[show edit update destroy]
+  before_action :set_movie, only: %i[show destroy]
 
   def index
-    @movies = Movie.all
+    @movies = Movie.all.order(:score).reverse
   end
 
   def show
@@ -11,32 +11,26 @@ class MoviesController < ApplicationController
 
   def new
     @movie = Movie.new
+    @actors = Actor.select(:name).map(&:name).uniq
+    @genres = Genre.select(:name).map(&:name).uniq
   end
 
   def create
     @movie = Movie.new(movie_params)
-    if @movie.save
+    @movie_actor = ActorsToMovie.new(movie_id: @movie.id, actor_id: @actors)
+    @movie_genre = GenreToMovie.new(movie_id: @movie.id, genre_id: @genre)
+    if @movie.save && @movie_actor.save && @movie_genre.save
       redirect_to movie_path(@movie)
     else
       render :new, status: :unprocessable_entity, notice: "Movie could not be added"
     end
   end
 
-  def edit; end
-
-  def update
-    if @movie.update(movie_params)
-      redirect_to movie_path(@movie)
-    else
-      render :new, status: :unprocessable_entity
-    end
-  end
-
-  def destoy
+  def destroy
     if @movie.destroy
       redirect_to movies_path
     else
-      render :new, status: :unprocessable_entity, notice: "Movie not removed"
+      render :see_other, status: :unprocessable_entity, notice: "Movie could not be removed"
     end
   end
 

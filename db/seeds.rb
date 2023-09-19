@@ -15,6 +15,26 @@ movies = JSON.parse(movies_serialized)
 Movie.destroy_all
 Genre.destroy_all
 Actor.destroy_all
+GenreToMovie.destroy_all
+ActorsToMovie.destroy_all
+
+puts "==========================================="
+puts "Creating genres..."
+puts "==========================================="
+movies.take(10).each do |movie|
+  # Ici je récupère les 10 premiers films
+  # movie["genre"].each do |f|
+  movie["genre"].each do |f|
+    # ici je regarde les genres associés aux 10 films
+    new_genre = Genre.create(name: f)
+    puts new_genre.name
+  end
+end
+
+# Genre.select(:name).map(&:name).uniq
+# --> array avec les genres uniques
+
+
 
 puts "==========================================="
 puts "Creating movies..."
@@ -33,23 +53,36 @@ end
 puts "==========================================="
 puts "Creating actors..."
 puts "==========================================="
+
 movies.take(10).each do |movie|
   new_actor = Actor.new
   movie["actors"].each do |f|
     new_actor = Actor.create(name: f)
   end
   movie["actor_facets"].each do |f|
-    new_actor.image = f
+    new_actor.update(image: f)
   end
-  # puts new_actor.name
+  puts new_actor.name
 end
 
 puts "==========================================="
-puts "Creating genres..."
+puts "Creating associated actors..."
 puts "==========================================="
-movies.take(10).each do |movie|
-  movie["genre"].each do |f|
-    new_genre = Genre.create(name: f)
-    puts new_genre.name
-  end
+
+10.times do
+  ActorsToMovie.create(
+    movie_id: Movie.all.to_a.sample.id,
+    actor_id: Actor.all.to_a.sample.id
+  )
+end
+
+puts "==========================================="
+puts "Creating associated genres..."
+puts "==========================================="
+
+10.times do
+  GenreToMovie.create(
+    movie_id: Movie.all.to_a.sample.id,
+    genre_id: Genre.all.to_a.sample.id
+  )
 end
