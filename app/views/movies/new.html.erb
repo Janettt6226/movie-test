@@ -1,5 +1,13 @@
-<%= simple_form_for [@movie] do |f| %>
-  <%= f.input :title, as: :string, input_html: { data: { controller: "datepicker" } } %>
-  <%= f.input :year, as: :string, input_html: { data: { controller: "datepicker" } } %>
-  <%= f.submit "Add this movie", class: "btn btn-warning" %>
-<% end %>
+<div class="container">
+  <h1>Add a new movie</h1>
+  <%= simple_form_for [@movie] do |f| %>
+    <%= f.input :title, as: :string %>
+    <%= f.input :year, as: :string %>
+    <%= f.input :score, as: :integer %>
+    <%= f.input :rating, as: :integer %>
+    <%= f.input :actors, collection: @actors %>
+    <%= f.input :genres, collection: @genres %>
+    <%= f.submit "Add this movie", class: "btn btn-warning" %>
+  <% end %>
+</div>
+<%= console %>
