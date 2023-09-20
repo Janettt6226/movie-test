@@ -5,8 +5,10 @@
     <%= f.input :year, as: :string %>
     <%= f.input :score, as: :integer %>
     <%= f.input :rating, as: :integer %>
-    <%= f.input :actors, collection: @actors %>
-    <%= f.input :genres, collection: @genres %>
+    <h2>Select actors</h2>
+    <%= f.collection_check_boxes :actor_ids, Actor.all.order(:name), :id, :name %>
+    <h2>Select genres</h2>
+    <%= f.collection_check_boxes :genre_ids, Genre.all.order(:id).pluck(:name), :id, :name %>
     <%= f.submit "Add this movie", class: "btn btn-warning" %>
   <% end %>
 </div>

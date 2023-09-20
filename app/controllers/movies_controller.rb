@@ -11,8 +11,8 @@ class MoviesController < ApplicationController
 
   def new
     @movie = Movie.new
-    @actors = Actor.select(:name).map(&:name).uniq
-    @genres = Genre.select(:name).map(&:name).uniq
+    @actors = Actor.all.select(:name).map(&:name).uniq
+    @genres = Genre.all.select(:name).map(&:name).uniq
   end
 
   def create
@@ -41,6 +41,6 @@ class MoviesController < ApplicationController
   end
 
   def movie_params
-    params.require(:movie).permit(:title, :year, :rating, :score, :image)
+    params.require(:movie).permit(:title, :year, :rating, :score, :image, actor_ids: [], genre_ids: [])
   end
 end
