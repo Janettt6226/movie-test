@@ -11,8 +11,10 @@
       <img src="https://i.gifer.com/ZJuw.gif" alt="cat cover">
     <% end %>
     <h3>Released in: <%= movie.year %></h3>
-    <p>Score: <%= movie.score.round(2) %>/10</p>
-    <p>Rating: <%= movie.rating %>/5</p>
+    <% if movie.score.nil? == "false" || movie.rating.nil? == "false" %>
+      <p>Score: <%= movie.score.round(2) %>/10</p>
+      <p>Rating: <%= movie.rating %>/5</p>
+    <% end %>
     <p>Genre: </p>
     <% movie.genres.each do |genre| %>
       <ul>
